@@ -8,10 +8,6 @@ import google.generativeai as genai
 
 app = Flask(__name__)
 
-# =========================
-# CONNEXION MYSQL RAILWAY
-# =========================
-
 db_config = {
     "host": os.getenv("MYSQLHOST"),
     "user": os.getenv("MYSQLUSER"),
@@ -24,10 +20,6 @@ db_config = {
 def db_connect():
     return mysql.connector.connect(**db_config)
 
-
-# =========================
-# INITIALISATION DB
-# =========================
 
 def init_db():
     try:
@@ -56,27 +48,10 @@ def init_db():
 init_db()
 
 
-# =========================
-# ACCUEIL
-# =========================
-
 @app.route("/")
 def home():
     return "DOOR MONITORING API WORKING"
 
-
-# =========================
-# TEST DB
-# =========================
-
-@app.route("/debug-db")
-def debug_db():
-    return jsonify({
-        "host": os.getenv("MYSQLHOST"),
-        "user": os.getenv("MYSQLUSER"),
-        "database": os.getenv("MYSQLDATABASE"),
-        "port": os.getenv("MYSQLPORT")
-    })
 
 @app.route("/test-db")
 def test_db():
@@ -103,12 +78,7 @@ def test_db():
         }), 500
 
 
-# =========================
-# RECEPTION DONNEES PICO W
-# =========================
-
 @app.route("/door-data")
-@app.route("/Door_data")
 def door_data():
     try:
         device_id = request.args.get("device_id", "porte_001")
@@ -153,12 +123,7 @@ def door_data():
         }), 500
 
 
-# =========================
-# HISTORIQUE
-# =========================
-
 @app.route("/door-logs")
-@app.route("/Door_logs")
 def door_logs():
     try:
         conn = db_connect()
@@ -185,12 +150,7 @@ def door_logs():
         }), 500
 
 
-# =========================
-# ANALYSE ISOLATION FOREST
-# =========================
-
 @app.route("/door-analyze")
-@app.route("/annalyse")
 def door_analyze():
     try:
         conn = db_connect()
@@ -244,12 +204,7 @@ def door_analyze():
         }), 500
 
 
-# =========================
-# RAPPORT IA GEMINI
-# =========================
-
 @app.route("/door-report")
-@app.route("/rapport")
 def door_report():
     try:
         api_key = os.getenv("GEMINI_API_KEY")
@@ -365,23 +320,8 @@ Le rapport doit etre professionnel, clair et facile a comprendre.
         }), 500
 
 
-# =========================
-# LANCEMENT LOCAL / RAILWAY
-# =========================
-
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
         port=int(os.getenv("PORT", 5000))
     )
-
-        
-        
-            
-        
-        
-        
-                 
-                       
-    
-
