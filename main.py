@@ -69,6 +69,15 @@ def home():
 # TEST DB
 # =========================
 
+@app.route("/debug-db")
+def debug_db():
+    return jsonify({
+        "host": os.getenv("MYSQLHOST"),
+        "user": os.getenv("MYSQLUSER"),
+        "database": os.getenv("MYSQLDATABASE"),
+        "port": os.getenv("MYSQLPORT")
+    })
+
 @app.route("/test-db")
 def test_db():
     try:
